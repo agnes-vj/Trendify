@@ -17,6 +17,7 @@ namespace Backend
         public DbSet<Outfit> Outfits { get; set; }
 
         public DbSet<ImageLocation> ImageLocations { get; set; }
+        public DbSet<OutfitCalendarEntry> OutfitCalendarEntries { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

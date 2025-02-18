@@ -1,5 +1,8 @@
 ﻿@using Backend.Models
+@using System.Text.Json
+@inject IJSRuntime JS
 @rendermode InteractiveServer
+
 
 <div class="weather-container p-1 bg-gray-100 rounded shadow-md w-full max-w-7xl mx-auto" id="mainFrame">
     <div class="flex justify-between items-center bg-white p-2 rounded shadow">
@@ -8,7 +11,10 @@
             <input @bind="Location" placeholder="Location" class="border p-2 rounded w-48" />
             <button @onclick="LocationChanged" class="bg-blue text-gray-800 px-4 py-2 rounded shadow">Go</button>
         </div>
-
+        <div class="flex justify-center space-x-4 mt-4">
+            <input type="date" @bind="SelectedDate" class="border p-2 rounded w-48" />
+            <button @onclick="SaveOutfitToCalendar" class="bg-green-500 text-white px-4 py-2 rounded shadow">Save to Calendar</button>
+        </div>
         @if (Weather != null)
         {
             <div class="flex items-center space-x-4">
@@ -32,7 +38,8 @@
 
     private List<string> OutfitImageUrls { get; set; } = new();
 
-    private CancellationTokenSource? cts;
+    private DateTime SelectedDate { get; set; } = DateTime.Today;
+    private List<OutfitCalendarEntry> OutfitCalendar { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -117,4 +124,28 @@
         await GetWeather();
         await GetOutfits();
     }
+
+    private async Task SaveOutfitToCalendar()
+    {
+        if (outfit == null || outfit.Count == 0)
+        {
+            Console.WriteLine("No outfit selected.");
+            return;
+        }
+
+        OutfitCalendar.Add(new OutfitCalendarEntry
+            {
+                Date = SelectedDate,
+                SelectedOutfit = new List<ClothingItem>(outfit)
+            });
+
+        await SaveCalendarToStorage();
+    }
+
+    private async Task SaveCalendarToStorage()
+    {
+        // TODO
+    }
+
+
 }
