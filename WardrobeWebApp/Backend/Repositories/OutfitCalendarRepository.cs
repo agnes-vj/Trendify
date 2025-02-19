@@ -16,6 +16,10 @@ namespace Backend.Repositories
             _dbContext.OutfitCalendarEntries.Add(entry);
             _dbContext.SaveChangesAsync();
         }
+        public OutfitCalendarEntry GetOutfitCalendarEntry(int id)
+        {
+            return _dbContext.OutfitCalendarEntries.FirstOrDefault(entry => entry.Id == id);
+        }
 
         public List<OutfitCalendarEntry> GetOutfitCalendarEntries()
         {
@@ -27,5 +31,6 @@ namespace Backend.Repositories
     {
         void SaveOutfitCalendarEntry(OutfitCalendarEntry entry);
         List<OutfitCalendarEntry> GetOutfitCalendarEntries();
+        OutfitCalendarEntry GetOutfitCalendarEntry(int id);
     }
 }
